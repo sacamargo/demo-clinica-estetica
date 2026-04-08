@@ -90,13 +90,16 @@ const CONTENT_ES = {
       "Resultados que preservan la identidad, mejorando la proporción y funcionalidad.",
     beforeLabel: "Antes",
     afterLabel: "Después",
+    /** Solo tablet/desktop: aparece sobre el comparador deslizable */
+    sliderHint: "Desliza para comparar",
     cases: [
       {
         before:
-          "https://lh3.googleusercontent.com/aida-public/AB6AXuDLKKfmDN4uYSTf6PhnZpGdRl0t4J5-aPzAGPs9sMcBuWmAWYypHgPARFFG9szyPFnUNbHRKfZDwGuloh5Qbd_HTVvaCjV4jC0w0n8RGD3fvcHWzE851srC1y6tqWwyi-uEaBhudHJuC5jS8xKWTslR8M5Tm62lyz9ZFnxw4EMWKFYVzn4_RulixCk3yEMhzs3l-NGNsmckuvD67a3Fq8IsOCGARlycZGba1fiNrgK3uFjHWgbqTY4t9T6AEZVdU5EaqmTlfHeeakc",
+          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1600&q=80",
         after:
-          "https://lh3.googleusercontent.com/aida-public/AB6AXuDVDPzln25O28TwhWRwtj-4iEmU6OaJGM4QlCz8JRDcXTz5pyI8V00QISxbT7e-Axe8qsxNb3MNWW7pQfUGdW0CRVqQPmqtw057Yefd8iWbnk7wdVkXFz_tOesChiKbhWGU5uKeXPb5RsnB-xwwW8sZJhd-e67Oq6OPaxJ6clXQrESzYB2pG4eHH5kzX3xRQQAEHjN6crHtrwrqhTPD5uoCAAI_uv67eTiLhu1S0fTM7bm4kRIJYPzXlZAcFxe5BaOTGBwl7DcBC2U",
-        caption: "Caso destacado — vista clínica de perfil",
+          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1600&q=80",
+        caption:
+          "Demo interactiva — arrastra el divisor (en pantallas medianas y grandes)",
       },
     ],
   },
@@ -300,13 +303,15 @@ const CONTENT_EN = {
       "Results that preserve identity while improving proportion and function.",
     beforeLabel: "Before",
     afterLabel: "After",
+    sliderHint: "Drag to compare",
     cases: [
       {
         before:
-          "https://lh3.googleusercontent.com/aida-public/AB6AXuDLKKfmDN4uYSTf6PhnZpGdRl0t4J5-aPzAGPs9sMcBuWmAWYypHgPARFFG9szyPFnUNbHRKfZDwGuloh5Qbd_HTVvaCjV4jC0w0n8RGD3fvcHWzE851srC1y6tqWwyi-uEaBhudHJuC5jS8xKWTslR8M5Tm62lyz9ZFnxw4EMWKFYVzn4_RulixCk3yEMhzs3l-NGNsmckuvD67a3Fq8IsOCGARlycZGba1fiNrgK3uFjHWgbqTY4t9T6AEZVdU5EaqmTlfHeeakc",
+          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1600&q=80",
         after:
-          "https://lh3.googleusercontent.com/aida-public/AB6AXuDVDPzln25O28TwhWRwtj-4iEmU6OaJGM4QlCz8JRDcXTz5pyI8V00QISxbT7e-Axe8qsxNb3MNWW7pQfUGdW0CRVqQPmqtw057Yefd8iWbnk7wdVkXFz_tOesChiKbhWGU5uKeXPb5RsnB-xwwW8sZJhd-e67Oq6OPaxJ6clXQrESzYB2pG4eHH5kzX3xRQQAEHjN6crHtrwrqhTPD5uoCAAI_uv67eTiLhu1S0fTM7bm4kRIJYPzXlZAcFxe5BaOTGBwl7DcBC2U",
-        caption: "Featured case — clinical profile view",
+          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1600&q=80",
+        caption:
+          "Interactive demo — drag the divider (tablet & desktop)",
       },
     ],
   },

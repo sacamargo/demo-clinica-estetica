@@ -7,6 +7,18 @@
 const LANG_KEY = "clinic-landing-lang";
 const SUPPORTED_LANGS = ["es", "en"];
 
+/** Banderas para selector de idioma (Colombia / Estados Unidos) — tamaño compacto */
+const LANG_FLAGS = {
+  es: {
+    src: "https://flagcdn.com/w40/co.png",
+    label: "Español",
+  },
+  en: {
+    src: "https://flagcdn.com/w40/us.png",
+    label: "English",
+  },
+};
+
 function getStoredLang() {
   try {
     const s = localStorage.getItem(LANG_KEY);
@@ -65,26 +77,33 @@ function renderHeader(c, waUrl, lang) {
   const navItems = c.nav.items
     .map(
       (item) =>
-        `<a class="nav-link text-xs uppercase tracking-widest text-[color:var(--color-on-surface)]/70 hover:text-[color:var(--color-primary)] transition-colors duration-300" href="${esc(item.href)}">${esc(item.label)}</a>`
+        `<a class="nav-link shrink-0 uppercase tracking-widest text-[color:var(--color-on-surface)]/70 hover:text-[color:var(--color-primary)] transition-colors duration-300 text-[10px] sm:text-xs" href="${esc(item.href)}">${esc(item.label)}</a>`
     )
     .join("");
 
-  const langButtons = SUPPORTED_LANGS.map(
-    (code) =>
-      `<button type="button" class="lang-btn px-2 py-1 text-[10px] uppercase tracking-widest rounded ${
-        code === lang
-          ? "bg-[color:var(--color-primary)]/15 text-[color:var(--color-primary)] font-bold"
-          : "text-[color:var(--color-on-surface)]/60 hover:text-[color:var(--color-primary)]"
-      }" data-lang="${code}">${code}</button>`
-  ).join("");
+  const langButtons = SUPPORTED_LANGS.map((code) => {
+    const active = code === lang;
+    const flag = LANG_FLAGS[code];
+    return `<button type="button" class="lang-btn flex items-center justify-center w-7 h-5 sm:w-8 sm:h-[22px] rounded overflow-hidden border transition-all shrink-0 ${
+      active
+        ? "border-[color:var(--color-primary)] ring-1 ring-[color:var(--color-primary)]/30"
+        : "border-[color:var(--color-outline-variant)]/30 opacity-80 hover:opacity-100 hover:border-[color:var(--color-outline-variant)]/60"
+    }" data-lang="${code}" aria-label="${esc(flag.label)}" title="${esc(flag.label)}">
+      <img src="${esc(flag.src)}" alt="" width="40" height="30" class="h-full w-full object-cover pointer-events-none" loading="lazy" decoding="async" />
+    </button>`;
+  }).join("");
 
   return `
-    <div class="flex justify-between items-center px-6 md:px-12 py-5 md:py-6 w-full max-w-screen-2xl mx-auto gap-4">
-      <a class="font-headline text-xl md:text-2xl font-light text-[color:var(--color-on-surface)] tracking-tighter shrink-0" href="#home">${esc(c.clinicName)}</a>
-      <nav class="hidden md:flex items-center gap-8 lg:gap-10 flex-1 justify-center min-w-0" aria-label="Principal">${navItems}</nav>
-      <div class="flex items-center gap-2 md:gap-3 shrink-0">
-        <div class="flex items-center rounded border border-[color:var(--color-outline-variant)]/40 p-0.5" role="group" aria-label="${esc(c.langLabel)}">${langButtons}</div>
-        <a class="btn-primary text-[color:var(--color-on-primary)] font-semibold px-4 py-2.5 md:px-6 md:py-3 rounded-lg text-xs md:text-sm tracking-wide shadow-sm hover:translate-y-[-1px] transition-all duration-300 active:scale-95 whitespace-nowrap" href="${esc(waUrl)}" target="_blank" rel="noopener noreferrer">${esc(c.nav.cta)}</a>
+    <div class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-12 py-3 md:py-4 lg:py-5">
+      <div class="flex flex-col gap-2.5 sm:gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+        <div class="flex items-center justify-between gap-3 min-w-0 lg:contents">
+          <a class="font-headline text-lg sm:text-xl lg:text-2xl font-light text-[color:var(--color-on-surface)] tracking-tighter truncate min-w-0 max-w-[58%] sm:max-w-none lg:max-w-[min(280px,28vw)] xl:max-w-none lg:order-1" href="#home">${esc(c.clinicName)}</a>
+          <div class="flex items-center gap-1.5 sm:gap-2 shrink-0 lg:order-3">
+            <div class="flex items-center gap-0.5 rounded-md border border-[color:var(--color-outline-variant)]/35 p-0.5 bg-[color:var(--color-background)]/90" role="group" aria-label="${esc(c.langLabel)}">${langButtons}</div>
+            <a class="btn-primary text-[color:var(--color-on-primary)] font-semibold text-[10px] sm:text-xs px-2.5 py-2 sm:px-4 sm:py-2.5 lg:px-5 lg:py-2.5 rounded-lg tracking-wide shadow-sm hover:translate-y-[-1px] transition-all duration-300 active:scale-95 whitespace-nowrap max-w-[10rem] sm:max-w-none truncate sm:overflow-visible" href="${esc(waUrl)}" target="_blank" rel="noopener noreferrer">${esc(c.nav.cta)}</a>
+          </div>
+        </div>
+        <nav class="flex flex-wrap justify-center sm:justify-center gap-x-4 gap-y-1 sm:gap-x-6 lg:gap-8 xl:gap-10 overflow-x-auto overscroll-x-contain pb-0.5 -mx-1 px-1 lg:flex-1 lg:order-2 lg:min-w-0 lg:px-2 border-t border-[color:var(--color-outline-variant)]/15 pt-2.5 lg:border-0 lg:pt-0" aria-label="Principal">${navItems}</nav>
       </div>
     </div>`;
 }
@@ -161,26 +180,70 @@ function renderTrust(c) {
 
 function renderBeforeAfter(c) {
   const b = c.beforeAfter;
+  const sliderHint = b.sliderHint ? esc(b.sliderHint) : "";
+
   const cases = b.cases
     .map(
       (item) => `
-    <div class="relative max-w-5xl mx-auto group mb-16 last:mb-0">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-1 bg-[color:var(--color-surface-container-highest)] overflow-hidden rounded-xl shadow-xl">
-        <div class="relative h-[380px] md:h-[520px] lg:h-[600px]">
-          <img alt="" class="w-full h-full object-cover" src="${esc(item.before)}" loading="lazy" />
-          <div class="absolute bottom-4 left-4 md:bottom-6 md:left-6 px-3 py-2 md:px-4 bg-black/40 backdrop-blur-md text-white font-label text-[10px] md:text-xs uppercase tracking-widest rounded">${esc(b.beforeLabel)}</div>
+    <div class="relative max-w-5xl mx-auto mb-16 last:mb-0">
+      <!-- Móvil: una imagen encima de la otra (ancho completo) -->
+      <div class="md:hidden flex flex-col gap-0 overflow-hidden rounded-xl bg-[color:var(--color-surface-container-highest)] shadow-xl">
+        <div class="relative w-full aspect-[4/5] sm:aspect-[3/4]">
+          <img alt="" class="h-full w-full object-cover object-center" src="${esc(item.before)}" loading="lazy" />
+          <div class="absolute left-3 top-3 rounded bg-black/45 px-2 py-1 font-label text-[9px] uppercase tracking-widest text-white backdrop-blur-md">${esc(b.beforeLabel)}</div>
         </div>
-        <div class="relative h-[380px] md:h-[520px] lg:h-[600px]">
-          <img alt="" class="w-full h-full object-cover" src="${esc(item.after)}" loading="lazy" />
-          <div class="absolute bottom-4 right-4 md:bottom-6 md:right-6 px-3 py-2 md:px-4 bg-[color:var(--color-primary)]/80 backdrop-blur-md text-white font-label text-[10px] md:text-xs uppercase tracking-widest rounded">${esc(b.afterLabel)}</div>
-        </div>
-      </div>
-      <div class="absolute inset-y-0 left-1/2 -ml-px w-0.5 bg-[color:var(--color-primary)]/50 hidden md:block pointer-events-none" aria-hidden="true">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white shadow-lg flex items-center justify-center border border-[color:var(--color-primary)]/20">
-          <span class="material-symbols-outlined text-[color:var(--color-primary)] text-lg md:text-xl">unfold_more</span>
+        <div class="relative w-full aspect-[4/5] sm:aspect-[3/4]">
+          <img alt="" class="h-full w-full object-cover object-center" src="${esc(item.after)}" loading="lazy" />
+          <div class="absolute left-3 top-3 rounded bg-[color:var(--color-primary)]/85 px-2 py-1 font-label text-[9px] uppercase tracking-widest text-white backdrop-blur-md">${esc(b.afterLabel)}</div>
         </div>
       </div>
-      <p class="text-center text-sm text-[color:var(--color-on-surface-variant)] mt-4 italic font-headline">${esc(item.caption)}</p>
+
+      <!-- Tablet y desktop: comparador deslizable -->
+      <div
+        class="hidden md:block relative rounded-xl overflow-hidden shadow-xl bg-[color:var(--color-surface-container-highest)] outline-none"
+        data-ba-slider
+        tabindex="0"
+        role="group"
+        aria-label="${esc(b.title)}"
+      >
+        ${
+          sliderHint
+            ? `<p class="pointer-events-none absolute top-3 left-1/2 z-20 -translate-x-1/2 text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white drop-shadow-md bg-black/35 backdrop-blur-sm px-3 py-1.5 rounded-full">${sliderHint}</p>`
+            : ""
+        }
+        <div class="relative h-[420px] sm:h-[480px] lg:h-[600px] w-full">
+          <img class="pointer-events-none absolute inset-0 h-full w-full object-cover" src="${esc(item.after)}" alt="" loading="lazy" />
+          <div
+            class="absolute inset-y-0 left-0 top-0 z-[1] overflow-hidden will-change-[width]"
+            data-ba-clip
+            style="width:50%"
+          >
+            <img
+              class="pointer-events-none absolute left-0 top-0 h-full max-w-none object-cover object-left"
+              src="${esc(item.before)}"
+              alt=""
+              loading="lazy"
+              data-ba-before-img
+            />
+          </div>
+          <div
+            class="absolute inset-y-0 z-10 w-0.5 -translate-x-1/2 cursor-ew-resize bg-[color:var(--color-primary)] shadow-[2px_0_8px_rgba(0,0,0,0.15)]"
+            style="left:50%"
+            data-ba-handle
+            aria-hidden="true"
+          >
+            <span
+              class="ba-handle-pill pointer-events-none absolute left-1/2 top-1/2 flex h-10 w-10 sm:h-11 sm:w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/90 bg-white shadow-lg ring-2 ring-[color:var(--color-primary)]/25"
+            >
+              <span class="material-symbols-outlined ba-handle-hint text-[20px] sm:text-[22px] text-[color:var(--color-primary)]" aria-hidden="true">sync_alt</span>
+            </span>
+          </div>
+          <div class="pointer-events-none absolute bottom-4 left-4 z-[2] px-3 py-2 bg-black/40 backdrop-blur-md text-white font-label text-[10px] uppercase tracking-widest rounded">${esc(b.beforeLabel)}</div>
+          <div class="pointer-events-none absolute bottom-4 right-4 z-[2] px-3 py-2 bg-[color:var(--color-primary)]/85 backdrop-blur-md text-white font-label text-[10px] uppercase tracking-widest rounded">${esc(b.afterLabel)}</div>
+        </div>
+      </div>
+
+      <p class="mt-4 text-center text-sm text-[color:var(--color-on-surface-variant)] italic font-headline">${esc(item.caption)}</p>
     </div>`
     )
     .join("");
@@ -195,6 +258,91 @@ function renderBeforeAfter(c) {
         ${cases}
       </div>
     </section>`;
+}
+
+/**
+ * Comparador antes/después: arrastre con puntero (mouse y touch). Solo nodos [data-ba-slider].
+ */
+function initBeforeAfterSliders(root) {
+  const sliders = root.querySelectorAll("[data-ba-slider]");
+
+  sliders.forEach((slider) => {
+    const clip = slider.querySelector("[data-ba-clip]");
+    const handle = slider.querySelector("[data-ba-handle]");
+    const beforeImg = slider.querySelector("[data-ba-before-img]");
+    if (!clip || !handle || !beforeImg) return;
+
+    let dragging = false;
+    let pct = 50;
+
+    function syncBeforeWidth() {
+      const w = slider.offsetWidth;
+      if (w > 0) beforeImg.style.width = `${w}px`;
+    }
+
+    function applyPct(p) {
+      pct = Math.max(6, Math.min(94, p));
+      clip.style.width = `${pct}%`;
+      handle.style.left = `${pct}%`;
+    }
+
+    function fromClientX(clientX) {
+      const rect = slider.getBoundingClientRect();
+      if (rect.width <= 0) return;
+      const x = clientX - rect.left;
+      applyPct((x / rect.width) * 100);
+    }
+
+    function onPointerDown(e) {
+      if (e.button != null && e.button !== 0) return;
+      dragging = true;
+      slider.setPointerCapture(e.pointerId);
+      slider.classList.add("ba-slider--dragging");
+      fromClientX(e.clientX);
+    }
+
+    function onPointerMove(e) {
+      if (!dragging) return;
+      fromClientX(e.clientX);
+    }
+
+    function onPointerUp(e) {
+      if (!dragging) return;
+      dragging = false;
+      slider.classList.remove("ba-slider--dragging");
+      try {
+        if (e && e.pointerId != null) slider.releasePointerCapture(e.pointerId);
+      } catch (_) {}
+    }
+
+    slider.addEventListener("pointerdown", onPointerDown);
+    slider.addEventListener("pointermove", onPointerMove);
+    slider.addEventListener("pointerup", onPointerUp);
+    slider.addEventListener("pointercancel", onPointerUp);
+
+    slider.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        applyPct(pct - 3);
+      }
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        applyPct(pct + 3);
+      }
+    });
+
+    applyPct(50);
+    syncBeforeWidth();
+
+    if (typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(() => {
+        syncBeforeWidth();
+      });
+      ro.observe(slider);
+    } else {
+      window.addEventListener("resize", syncBeforeWidth);
+    }
+  });
 }
 
 // --- PROCEDURES -------------------------------------------------------------
@@ -419,6 +567,8 @@ function mount(lang) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   });
+
+  initBeforeAfterSliders(root);
 }
 
 document.addEventListener("DOMContentLoaded", () => {

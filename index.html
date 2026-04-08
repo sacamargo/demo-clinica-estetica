@@ -57,11 +57,46 @@
       body {
         min-height: 100dvh;
       }
-      /* Anclas bajo header fijo */
+      /* Comparador antes/después (tablet/desktop) */
+      [data-ba-slider] {
+        touch-action: none;
+        user-select: none;
+        cursor: ew-resize;
+      }
+      [data-ba-slider].ba-slider--dragging {
+        cursor: grabbing;
+      }
+      .ba-handle-hint {
+        animation: ba-handle-hint 2.4s ease-in-out infinite;
+      }
+      [data-ba-slider].ba-slider--dragging .ba-handle-hint {
+        animation: none;
+      }
+      @keyframes ba-handle-hint {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        50% {
+          transform: translateX(6px);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ba-handle-hint {
+          animation: none;
+        }
+      }
+      /* Anclas bajo header fijo (header puede ocupar 2 líneas en móvil) */
       [id]:target,
       section[id],
       main section {
-        scroll-margin-top: 5.5rem;
+        scroll-margin-top: 6.5rem;
+      }
+      @media (min-width: 1024px) {
+        section[id],
+        main section {
+          scroll-margin-top: 5.5rem;
+        }
       }
     </style>
   </head>
