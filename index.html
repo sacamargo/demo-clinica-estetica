@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RHINO LUXE | Rinoplastia de Excelencia en Barranquilla</title>
+    <meta
+      name="description"
+      content="Especialistas en rinoplastia en Barranquilla. Atención personalizada para pacientes locales e internacionales."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,300..900;1,300..900&family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              headline: ['"Noto Serif"', "Georgia", "serif"],
+              body: ['Manrope', "system-ui", "sans-serif"],
+              label: ['Manrope', "system-ui", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --color-primary: #775a19;
+        --color-primary-dim: #6a4e0d;
+        --color-on-primary: #fff6ed;
+        --color-background: #faf9f7;
+        --color-on-surface: #2f3331;
+        --color-on-surface-variant: #5c605d;
+        --color-surface-container-low: #f3f4f1;
+        --color-surface-container-highest: #e0e3e0;
+        --color-outline-variant: #afb3b0;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+      }
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--color-primary) 0%,
+          var(--color-primary-dim) 100%
+        );
+      }
+      body {
+        min-height: 100dvh;
+      }
+      /* Anclas bajo header fijo */
+      [id]:target,
+      section[id],
+      main section {
+        scroll-margin-top: 5.5rem;
+      }
+    </style>
+  </head>
+  <body class="bg-[color:var(--color-background)] text-[color:var(--color-on-surface)] font-body antialiased overflow-x-hidden">
+    <!--
+      Template clínica — Contenido y tema: js/content.js | Render: js/app.js
+      Duplica esta carpeta, edita content.js (y opcionalmente colores en THEME).
+    -->
+
+    <!-- Raíz: el JS inyecta header, secciones y FAB -->
+    <div id="landing-root"></div>
+
+    <script src="js/content.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
